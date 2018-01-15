@@ -1,12 +1,12 @@
 import turtle
 
 p = turtle.Turtle()
-p.speed(1)
+p.speed(5)
 p.pensize(2)
 p.color("black","yellow")
 
 q = turtle.Turtle()
-q.speed(2)
+q.speed(1)
 q.pensize(2)
 q.color("black","yellow")
 
