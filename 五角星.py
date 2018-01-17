@@ -1,7 +1,7 @@
 import turtle
 
 p = turtle.Turtle()
-p.speed(6)
+p.speed(3)
 p.pensize(2)
 p.color("black","yellow")
 
