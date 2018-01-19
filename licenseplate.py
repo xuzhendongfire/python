@@ -1,10 +1,13 @@
+from __future__ import print_function
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 from scipy.stats import norm, skew
 from sklearn.metrics import mean_squared_error
-
+import numpy as np
+import statsmodels.api as sm
+from statsmodels.graphics.api import qqplot
 
 
 dir = "D:/xzd/bisai/tianchi_qicheshangpai/"
@@ -256,6 +259,13 @@ y3_m11_gb = y3_m11.groupby(['day_of_week'],as_index=False).cnt.mean()
 y3_m12_gb = y3_m12.groupby(['day_of_week'],as_index=False).cnt.mean()
 y3_mAll_gb = y3_brand.groupby(['day_of_week'],as_index=False).cnt.mean()
 #第二步(第一步可能出现没有周7的情况)
+
+
+#第三步
+
+
+
+
 
 
 
