@@ -1,7 +1,7 @@
 '''
-链接：http://blog.csdn.net/u010414589/article/details/49622625
+ARIMA链接：http://blog.csdn.net/u010414589/article/details/49622625
 链接有些许错误，下面是亲测可运行代码
-外文链接：http://www.statsmodels.org/devel/examples/notebooks/generated/tsa_arma_0.html
+ARMA外文链接：http://www.statsmodels.org/devel/examples/notebooks/generated/tsa_arma_0.html
 '''
 from __future__ import print_function
 import pandas as pd
@@ -40,30 +40,43 @@ diff2 = dta.diff(2)
 diff2.plot(ax=ax2)
 '''
 
+'''
 #选择合适的ARIMA模型，即ARIMA模型中合适的p,q
-dta= dta.diff(1)
-dta.dropna(inplace=True)
+diff1= dta.diff(1)
+diff1.dropna(inplace=True)
 fig = plt.figure(figsize=(12,8))
 ax1=fig.add_subplot(211)
 fig = sm.graphics.tsa.plot_acf(dta,lags=40,ax=ax1)
 ax2 = fig.add_subplot(212)
 fig = sm.graphics.tsa.plot_pacf(dta,lags=40,ax=ax2)
-
+'''
 
 #有以下模型可以供选择
-arma_mod20 = sm.tsa.ARMA(dta,(7,0)).fit()
+diff1= dta.diff(1)
+diff1.dropna(inplace=True)
+arma_mod20 = sm.tsa.ARMA(diff1,(7,0)).fit()
 print(arma_mod20.aic,arma_mod20.bic,arma_mod20.hqic)
-arma_mod30 = sm.tsa.ARMA(dta,(0,1)).fit()
+arma_mod30 = sm.tsa.ARMA(diff1,(0,1)).fit()
 print(arma_mod30.aic,arma_mod30.bic,arma_mod30.hqic)
-arma_mod40 = sm.tsa.ARMA(dta,(7,1)).fit()
+arma_mod40 = sm.tsa.ARMA(diff1,(7,1)).fit()
 print(arma_mod40.aic,arma_mod40.bic,arma_mod40.hqic)
-arma_mod50 = sm.tsa.ARMA(dta,(8,0)).fit()
+arma_mod50 = sm.tsa.ARMA(diff1,(8,0)).fit()
 print(arma_mod50.aic,arma_mod50.bic,arma_mod50.hqic)
 
+print()
+arma_mod60 = sm.tsa.ARMA(dta,(7,0)).fit()
+print(arma_mod60.aic,arma_mod60.bic,arma_mod60.hqic)
+arma_mod70 = sm.tsa.ARMA(dta,(0,1)).fit()
+print(arma_mod70.aic,arma_mod70.bic,arma_mod70.hqic)
+arma_mod80 = sm.tsa.ARMA(dta,(7,1)).fit()
+print(arma_mod80.aic,arma_mod80.bic,arma_mod80.hqic)
+arma_mod90 = sm.tsa.ARMA(dta,(8,0)).fit()
+print(arma_mod90.aic,arma_mod90.bic,arma_mod90.hqic)
 
+'''
 #模型检验
 #对ARMA(7,0)模型所产生的残差做自相关图
-resid = arma_mod20.resid#残差
+resid = arma_mod90.resid#残差
 fig = plt.figure(figsize=(12,8))
 ax1 = fig.add_subplot(211)
 fig = sm.graphics.tsa.plot_acf(resid.values.squeeze(), lags=40, ax=ax1)
@@ -83,10 +96,17 @@ r,q,p = sm.tsa.acf(resid.values.squeeze(), qstat=True)
 data = np.c_[range(1,41), r[1:], q, p]
 table = pd.DataFrame(data, columns=['lag', "AC", "Q", "Prob(>Q)"])
 print(table.set_index('lag'))
-
+'''
 
 #模型预测
-predict_sunspots = arma_mod20.predict('2090', '2100', dynamic=True)
+predict_sunspots = arma_mod20.predict('2090', '2261', dynamic=True)
+print(predict_sunspots)
+fig, ax = plt.subplots(figsize=(12, 8))
+ax = diff1.ix['2001':].plot(ax=ax)
+predict_sunspots.plot(ax=ax)
+
+
+predict_sunspots = arma_mod60.predict('2090', '2261', dynamic=True)
 print(predict_sunspots)
 fig, ax = plt.subplots(figsize=(12, 8))
 ax = dta.ix['2001':].plot(ax=ax)
