@@ -13,8 +13,8 @@ sample_A = pd.read_table(dir + 'sample_A_20171225.txt',engine='python',header=No
 
 date_week_gb = train.groupby(['date','day_of_week'],as_index = False).cnt.sum()
 #dta = np.array(train['cnt'],dtype=np.float)
-dta = pd.Series(date_week_gb['cnt'])
-#dta.index = pd.Index(sm.tsa.datetools.dates_from_range('2001','6773'))
+#dta = pd.Series(date_week_gb['cnt'])
+dta.index = pd.Index(sm.tsa.datetools.dates_from_range('2001','6773'))
 dta.index = pd.Index(date_week_gb['date'])
 dta.plot(figsize=(12,8))
 
@@ -67,12 +67,13 @@ fig = sm.graphics.tsa.plot_acf(dta,lags=70,ax=ax1)
 ax2 = fig.add_subplot(212)
 fig = sm.graphics.tsa.plot_pacf(dta,lags=70,ax=ax2)
 
+
 #plt.show()
 
 arma_mod90 = sm.tsa.ARMA(diff1,(12,0)).fit()
 print(arma_mod90.aic,arma_mod90.bic,arma_mod90.hqic)
 
-arma_mod120 = sm.tsa.ARMA(dta1,(12,0)).fit()
+arma_mod120 = sm.tsa.ARMA(dta1,order=(12,0)).fit()
 print(arma_mod120.aic,arma_mod120.bic,arma_mod120.hqic)
 
 #预测
@@ -80,8 +81,9 @@ print(arma_mod120.aic,arma_mod120.bic,arma_mod120.hqic)
 predict_sunspots = arma_mod120.predict('2143', '2261', dynamic=True)
 print(predict_sunspots)
 fig, ax = plt.subplots(figsize=(12, 8))
-ax = dta1.ix['2143':].plot(ax=ax)
+ax = diff2.ix['2143':].plot(ax=ax)
 predict_sunspots.plot(ax=ax)
+
 #对比
 t = y2[y2['date']<464]#118条数据
 t = np.array(t['cnt'],dtype=np.float)
